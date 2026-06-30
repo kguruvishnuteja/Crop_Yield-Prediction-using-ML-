@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Crop Yield Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="auth-shell">
+        <section class="auth-card">
+            <p class="eyebrow">Crop Yield System</p>
+            <h1>Sign in</h1>
+            <p class="subtitle">Use your account to access crop prediction and dashboards.</p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if error_message %}
+            <div class="alert error">{{ error_message }}</div>
+            {% endif %}
+
+            <form method="POST" class="auth-form">
+                <label>
+                    Email
+                    <input type="email" name="email" placeholder="name@example.com" required>
+                </label>
+
+                <label>
+                    Password
+                    <input type="password" name="password" placeholder="Your password" required>
+                </label>
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p class="auth-footer">
+                No account yet? <a href="{{ url_for('register') }}">Register here</a>
+            </p>
+
+            <p class="auth-footer small">
+                Default admin: admin@cropyield.local / Admin@12345
+            </p>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Crop Yield Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-nav">
+        <div>
+            <p class="eyebrow">Crop Yield System</p>
+            <h1 class="nav-title">Admin Dashboard</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('index') }}">Prediction</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page-wrap dashboard-wrap">
+        <section class="card dashboard-card">
+            <h2>Registered Users</h2>
+            <div class="table-scroll">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ user.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="card dashboard-card">
+            <h2>Recent Predictions</h2>
+            <div class="table-scroll">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>User</th>
+                            <th>State</th>
+                            <th>District</th>
+                            <th>Crop</th>
+                            <th>Season</th>
+                            <th>Area</th>
+                            <th>Predicted Yield</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in predictions %}
+                        <tr>
+                            <td>{{ row.created_at }}</td>
+                            <td>{{ row.user_name }}</td>
+                            <td>{{ row.state }}</td>
+                            <td>{{ row.district }}</td>
+                            <td>{{ row.crop }}</td>
+                            <td>{{ row.season }}</td>
+                            <td>{{ row.area }}</td>
+                            <td><strong>{{ row.predicted_yield }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

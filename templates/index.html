@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="site-nav">
+        <div>
+            <p class="eyebrow">Machine Learning + Agriculture</p>
+            <h1 class="nav-title">Crop Yield Prediction</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="{{ url_for('profile') }}">Profile</a>
+            {% if current_role == 'admin' %}
+            <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <div class="background-shape shape-1"></div>
+    <div class="background-shape shape-2"></div>
+
+    <main class="page-wrap">
+        <section class="card">
+            <div class="heading-wrap">
+                <p class="eyebrow">Logged in as {{ current_user.name }} ({{ current_role }})</p>
+                <h1>Crop Yield Prediction</h1>
+                <p class="subtitle">Enter farm and climate inputs to estimate expected crop yield (tons/hectare).</p>
+                <p class="model-tag">Active Model: {{ model_name }}</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if error_message %}
+            <div class="alert error">{{ error_message }}</div>
+            {% endif %}
+
+            {% if prediction is not none %}
+            <div class="alert success">
+                Predicted Yield: <strong>{{ prediction }}</strong> tons/hectare
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('predict') }}" class="prediction-form">
+                <div class="grid">
+                    <label>
+                        State
+                        <select id="state-select" name="state" required>
+                            {% for state in options.states %}
+                            <option value="{{ state }}" {% if state == selected_state %}selected{% endif %}>{{ state }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        District
+                        <select id="district-select" name="district" required>
+                            {% for district in options.state_district_map.get(selected_state, options.districts) %}
+                            <option value="{{ district }}" {% if district == selected_district %}selected{% endif %}>{{ district }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Crop Year
+                        <input type="number" name="crop_year" min="2000" max="2050" step="1" value="2023" required>
+                    </label>
+
+                    <label>
+                        Season
+                        <select name="season" required>
+                            {% for season in options.seasons %}
+                            <option value="{{ season }}">{{ season }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Crop
+                        <select name="crop" required>
+                            {% for crop in options.crops %}
+                            <option value="{{ crop }}">{{ crop }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Soil Type
+                        <select name="soil_type" required>
+                            {% for soil in options.soil_types %}
+                            <option value="{{ soil }}">{{ soil }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+
+                    <label>
+                        Area (hectare)
+                        <input type="number" name="area" min="0" step="0.01" placeholder="e.g. 45.5" required>
+                    </label>
+
+                    <label>
+                        Production
+                        <input type="number" name="production" min="0" step="0.01" placeholder="e.g. 120.0" required>
+                    </label>
+
+                    <label>
+                        Rainfall (mm)
+                        <input type="number" name="rainfall" min="0" step="0.01" placeholder="e.g. 900" required>
+                    </label>
+
+                    <label>
+                        Temperature (C)
+                        <input type="number" name="temperature" min="0" step="0.01" placeholder="e.g. 27" required>
+                    </label>
+
+                    <label>
+                        Humidity (%)
+                        <input type="number" name="humidity" min="0" step="0.01" placeholder="e.g. 65" required>
+                    </label>
+
+                    <label>
+                        Fertilizer Usage (kg/ha)
+                        <input type="number" name="fertilizer_usage" min="0" step="0.01" placeholder="e.g. 140" required>
+                    </label>
+                </div>
+
+                <button type="submit">Predict Crop Yield</button>
+            </form>
+
+            <div class="history-wrap">
+                <h2>Your Recent Predictions</h2>
+                <p class="history-note">Showing the latest {{ history|length }} saved predictions for your account.</p>
+                <div class="table-scroll">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>State</th>
+                                <th>District</th>
+                                <th>Crop</th>
+                                <th>Season</th>
+                                <th>Area (hectare)</th>
+                                <th>Predicted Yield (tons/hectare)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in history %}
+                            <tr>
+                                <td>{{ row.created_at }}</td>
+                                <td>{{ row.state }}</td>
+                                <td>{{ row.district }}</td>
+                                <td>{{ row.crop }}</td>
+                                <td>{{ row.season }}</td>
+                                <td>{{ row.area }}</td>
+                                <td><strong>{{ row.predicted_yield }}</strong></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script id="state-district-map" type="application/json">{{ options.state_district_map | tojson }}</script>
+    <script>
+        const stateDistrictMap = JSON.parse(document.getElementById("state-district-map").textContent);
+        const stateSelect = document.getElementById("state-select");
+        const districtSelect = document.getElementById("district-select");
+        const selectedDistrictOnLoad = "{{ selected_district }}";
+
+        function renderDistrictOptions(stateName, preferredDistrict = "") {
+            const districts = stateDistrictMap[stateName] || [];
+            districtSelect.innerHTML = "";
+
+            districts.forEach((districtName, index) => {
+                const option = document.createElement("option");
+                option.value = districtName;
+                option.textContent = districtName;
+                if (districtName === preferredDistrict || (index === 0 && !preferredDistrict)) {
+                    option.selected = true;
+                }
+                districtSelect.appendChild(option);
+            });
+        }
+
+        renderDistrictOptions(stateSelect.value, selectedDistrictOnLoad);
+        stateSelect.addEventListener("change", () => renderDistrictOptions(stateSelect.value));
+    </script>
+</body>
+</html>

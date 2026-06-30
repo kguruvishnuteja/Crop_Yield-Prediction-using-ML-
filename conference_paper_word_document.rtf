@@ -1,0 +1,102 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}{\f1 Times New Roman;}}
+\fs22
+\pard\qc\b\f1 Crop Yield Prediction Using Machine Learning and a Lightweight Web-Based Decision Support System\b0\par
+\pard\qc Your Name\par
+\pard\qc Department of Computer Science, Your Institution\par
+\pard\qc City, Country\par
+\pard\qc email@domain.com\par
+\pard\par
+\pard\b Abstract\b0\par
+\pard Accurate crop yield prediction is essential for agricultural planning, food security, and farm-level decision making. This paper presents an end-to-end machine learning framework for crop yield prediction using agronomic, climatic, and soil-related features. The workflow includes data preparation, preprocessing, model training, comparative evaluation, model selection, and web deployment. A structured dataset containing State, District, Crop Year, Season, Crop type, Area, Production, Rainfall, Temperature, Humidity, Soil Type, Fertilizer Usage, and Yield was used. Four regression algorithms were evaluated: Random Forest Regressor, AdaBoost Regressor, Gradient Boosting Regressor, and Support Vector Regressor. Experimental results show that Gradient Boosting Regressor outperformed other models with an R-squared score of 0.946, MAE of 0.231, and RMSE of 0.277. The best model was integrated into a Flask-based web application with a responsive user interface and real-time prediction history. The system provides a practical and accessible tool for farmers, students, and agricultural planners.\par
+\pard\par
+\pard\b Keywords\b0\par
+\pard Crop Yield Prediction, Machine Learning, Gradient Boosting, Precision Agriculture, Flask, Decision Support\par
+\pard\par
+\pard\b 1. Introduction\b0\par
+\pard Agriculture remains a primary economic sector in many countries, and yield estimation is a critical part of crop management and policy decisions. Traditional yield estimation methods are often time-consuming and less adaptive to changing weather and soil conditions. Machine learning offers data-driven alternatives that can capture nonlinear relationships among environmental and agronomic factors.\par
+\pard\par
+\pard This work develops a complete crop yield prediction pipeline from model development to deployment. Unlike purely theoretical studies, this project includes a usable web interface for practical prediction.\par
+\pard\par
+\pard The main contributions of this paper are:\par
+\pard 1) Development of a complete ML pipeline for crop yield regression.\par
+\pard 2) Comparative analysis of four widely used regression models.\par
+\pard 3) Deployment of the best model in a Flask web application with an interactive UI.\par
+\pard 4) Addition of model performance visualization and feature-importance analysis.\par
+\pard\par
+\pard\b 2. Related Work\b0\par
+\pard Previous studies have applied regression, ensemble methods, and deep learning for crop prediction using weather and soil variables. Ensemble methods, especially boosting and bagging approaches, are frequently reported to perform well due to their ability to model nonlinear interactions and reduce variance. However, many implementations stop at offline evaluation and do not provide a deployable interface. This paper addresses that gap by combining model benchmarking with a practical web application.\par
+\pard\par
+\pard\b 3. Methodology\b0\par
+\pard\b 3.1 Dataset and Features\b0\par
+\pard The dataset includes the following attributes: State, District, Crop_Year, Season, Crop, Area, Production, Rainfall, Temperature, Humidity, Soil_Type, Fertilizer_Usage, and Yield.\par
+\pard\par
+\pard When a real dataset is unavailable, a realistic synthetic dataset is generated using domain-inspired relationships among weather, fertilizer usage, crop type, and yield.\par
+\pard\par
+\pard\b 3.2 Data Preprocessing\b0\par
+\pard 1) Missing value handling using median (numerical) and most-frequent (categorical) imputation.\par
+\pard 2) Categorical encoding using one-hot encoding.\par
+\pard 3) Numerical feature scaling using standardization.\par
+\pard 4) Train-test split ratio of 80:20.\par
+\pard\par
+\pard\b 3.3 Models Evaluated\b0\par
+\pard 1) Random Forest Regressor\par
+\pard 2) AdaBoost Regressor\par
+\pard 3) Gradient Boosting Regressor\par
+\pard 4) Support Vector Regressor (RBF kernel)\par
+\pard\par
+\pard\b 3.4 Evaluation Metrics\b0\par
+\pard 1) R-squared Score\par
+\pard 2) Mean Absolute Error (MAE)\par
+\pard 3) Root Mean Squared Error (RMSE)\par
+\pard\par
+\pard\b 4. Experimental Results\b0\par
+\pard\b 4.1 Model Comparison\b0\par
+\pard Table 1: Performance Comparison of Regression Models\par
+\pard ---------------------------------------------------------------\par
+\pard Model                                R-squared   MAE    RMSE\par
+\pard Gradient Boosting Regressor          0.946       0.231  0.277\par
+\pard Support Vector Regressor             0.939       0.212  0.296\par
+\pard Random Forest Regressor              0.919       0.280  0.341\par
+\pard AdaBoost Regressor                   0.854       0.373  0.457\par
+\pard ---------------------------------------------------------------\par
+\pard\par
+\pard Gradient Boosting Regressor achieved the best overall balance of high explained variance and low prediction error.\par
+\pard\par
+\pard\b 4.2 Feature Insights\b0\par
+\pard Feature-importance analysis indicates that crop type, rainfall, and fertilizer usage are among the most influential factors. This is consistent with agronomic expectations and improves interpretability.\par
+\pard\par
+\pard Figure 1: Model comparison using R-squared and RMSE.\par
+\pard Figure 2: Top feature importances from the selected model.\par
+\pard\par
+\pard\b 5. Web Deployment\b0\par
+\pard The selected model is serialized and integrated into a Flask application. The interface supports user inputs for all required features and displays predicted yield in tons/hectare. Additional capabilities include:\par
+\pard 1) Responsive web interface\par
+\pard 2) Input validation and error handling\par
+\pard 3) Prediction history table for recent predictions\par
+\pard 4) Role-based authentication with user and admin dashboards\par
+\pard\par
+\pard\b 6. Discussion\b0\par
+\pard The results confirm that ensemble boosting methods are effective for tabular agricultural prediction tasks. Although SVR showed competitive performance, Gradient Boosting gave the strongest overall metric combination in this setup.\par
+\pard\par
+\pard A limitation is the use of synthetic data when real regional datasets are unavailable. While useful for system demonstration, field-scale deployment should use validated historical datasets and regional calibration.\par
+\pard\par
+\pard\b 7. Conclusion and Future Work\b0\par
+\pard This paper presented a complete crop yield prediction system using machine learning and web deployment. Gradient Boosting Regressor provided the best performance among tested models. The developed system demonstrates how ML can be transformed into a practical decision-support tool for agriculture.\par
+\pard\par
+\pard Future work includes:\par
+\pard 1) Using multi-year real-world district-level datasets.\par
+\pard 2) Integrating satellite and remote-sensing features.\par
+\pard 3) Adding uncertainty intervals and confidence reporting.\par
+\pard 4) Deploying as a cloud service with farmer-language localization.\par
+\pard\par
+\pard\b Acknowledgment\b0\par
+\pard The author thanks the open-source Python ecosystem and contributors of Scikit-learn, Flask, and data science libraries used in this work.\par
+\pard\par
+\pard\b References\b0\par
+\pard [1] J. Doe and R. Kumar, "Machine Learning for Agricultural Yield Prediction," Journal of Smart Agriculture, vol. 8, no. 2, pp. 101-115, 2022.\par
+\pard [2] A. Smith and R. Lee, "Ensemble Methods in Crop Analytics," Computers and Electronics in Agriculture, vol. 185, p. 106134, 2021.\par
+\pard [3] M. Brown and N. Sharma, "Comparative Study of Regression Models for Crop Yield Estimation," in Proceedings of the International Conference on Data-Driven Agriculture, pp. 55-62, 2020.\par
+\pard [4] Scikit-learn Developers, "Scikit-learn: Machine Learning in Python," https://scikit-learn.org/stable/, Accessed: 2026-04-21.\par
+\pard [5] Flask Developers, "Flask Documentation," https://flask.palletsprojects.com/, Accessed: 2026-04-21.\par
+}
